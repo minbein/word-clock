@@ -13,6 +13,7 @@ const WeatherComponent = () => {
       const responseWeatherAPI = await axios.get(
         `http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${selectedCity}&lang=pt`
       );
+      console.log(responseWeatherAPI);
       setWeatherData(responseWeatherAPI.data);
     } catch (error) {
       console.log(error);
@@ -32,6 +33,7 @@ const WeatherComponent = () => {
 
   useEffect(() => {
     fetchCityList();
+    fetchWeatherData("Brasília"); // Fetch weather data for Brasília initially
   }, []);
 
   const handleCityChange = (event) => {
@@ -46,6 +48,11 @@ const WeatherComponent = () => {
   const filteredCities = cityList.filter((cityItem) =>
     cityItem.nome.toLowerCase().includes(city.toLowerCase())
   );
+
+  const displayCityData = weatherData || {
+    location: { localtime: new Date().toLocaleTimeString() },
+    current: { temp_c: "N/A", humidity: "N/A", condition: { text: "N/A" } },
+  };
 
   return (
     <div>
@@ -69,18 +76,16 @@ const WeatherComponent = () => {
         </ul>
       )}
 
-      {weatherData && (
-        <div>
-          <h2>Dados meteorológicos de {city}</h2>
-          <p>Temperatura: {weatherData.current.temp_c} °C</p>
-          <p>Umidade: {weatherData.current.humidity}%</p>
-          <p>
-            Horário Local:{" "}
-            {new Date(weatherData.location.localtime).toLocaleTimeString()}
-          </p>
-          <p>Condição: {weatherData.current.condition.text}</p>
-        </div>
-      )}
+      <div>
+        <h2>Dados meteorológicos de {city || "Brasília"}</h2>
+        <p>Temperatura: {displayCityData.current.temp_c} °C</p>
+        <p>Umidade: {displayCityData.current.humidity}%</p>
+        <p>
+          Horário Local:{" "}
+          {new Date(displayCityData.location.localtime).toLocaleTimeString()}
+        </p>
+        <p>Condição: {displayCityData.current.condition.text}</p>
+      </div>
     </div>
   );
 };
