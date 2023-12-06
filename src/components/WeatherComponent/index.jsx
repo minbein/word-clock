@@ -81,7 +81,7 @@ const WeatherComponent = () => {
         <p>Temperatura: {displayCityData.current.temp_c} °C</p>
         <p>Umidade: {displayCityData.current.humidity}%</p>
         <p>
-          Horário local:{" "}
+          Horário Local:{" "}
           {new Date(displayCityData.location.localtime).toLocaleTimeString()}
         </p>
         <p>Condição: {displayCityData.current.condition.text}</p>
